@@ -1,58 +1,55 @@
 export default class Element {
 
-  constructor({
-    className = "",
-    type,
-    eventListeners = {}
-  }) {
-    if (typeof type !== "string") {
-      throw new Error("expected string");
-    }
-    this.className = className;
-    this.el = document.createElement(type);
-    this.addEventListener('enable', this.enable.bind(this));
-    this.addEventListener('disable', this.hide.bind(this));
-    this.addEventListener('show', this.show.bind(this));
-    this.addEventListener('hide', this.hide.bind(this));
-    Object.keys(eventListeners).forEach(eventName => {
-      this.addEventListener(eventName, eventListeners[eventName]);
-    });
-    this.show();
-  }
-
-  addEventListener(eventName, action) {
-    if (typeof action !== "function") {
-      throw new Error("action is not a function");
+    constructor({
+        className = '',
+        type = 'div',
+        eventListeners = {}
+    }) {
+        this.className = className;
+        this.el = document.createElement(type);
+        this.addEventListener('enable', this.enable.bind(this));
+        this.addEventListener('disable', this.hide.bind(this));
+        this.addEventListener('show', this.show.bind(this));
+        this.addEventListener('hide', this.hide.bind(this));
+        Object.keys(eventListeners).forEach(eventName => {
+            this.addEventListener(eventName, eventListeners[eventName]);
+        });
+        this.show();
     }
 
-    this.el.addEventListener(eventName, action);
-  }
+    addEventListener(eventName, action) {
+        if (typeof action !== "function") {
+            throw new Error("action is not a function");
+        }
 
-  dispatchEvent() {
-    this.el.dispatchEvent(new Event(...arguments));
-  }
+        this.el.addEventListener(eventName, action);
+    }
 
-  enable() {
-    this.el.removeAttribute('disabled');
-    this.dispatchEvent('enabled');
-  }
+    dispatchEvent() {
+        this.el.dispatchEvent(new Event(...arguments));
+    }
 
-  disable() {
-    this.el.setAttribute('disabled', 'true');
-    this.dispatchEvent('disabled');
-  }
+    enable() {
+        this.el.removeAttribute('disabled');
+        this.dispatchEvent('enabled');
+    }
 
-  hide() {
-    this.el.setAttribute('class', [this.className, 'hide'].join(" "));
-    this.dispatchEvent('hidden');
-  }
+    disable() {
+        this.el.setAttribute('disabled', 'true');
+        this.dispatchEvent('disabled');
+    }
 
-  show() {
-    this.el.setAttribute('class', this.className);
-    this.dispatchEvent('showing');
-  }
+    hide() {
+        this.el.setAttribute('class', [this.className, 'hide'].join(" "));
+        this.dispatchEvent('hidden');
+    }
 
-  render() {
-    throw new Error("not implemented");
-  }
+    show() {
+        this.el.setAttribute('class', this.className);
+        this.dispatchEvent('showing');
+    }
+
+    render() {
+        throw new Error("not implemented");
+    }
 }

@@ -4,7 +4,7 @@ import Group from './components/dom/Group';
 import TextField from './components/dom/TextField';
 
 
-const statusField = new TextField();
+const statusField = new TextField({});
 
 const textFieldText = "This <i>text</i> is <b>provided</b>!"
 
